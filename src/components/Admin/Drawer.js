@@ -15,13 +15,13 @@ import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles, useTheme } from "@material-ui/core/styles"
 
-import MesasIcon from "../../icons/mesas.svg"
+import MesasIcon from "../../icons/tables.js"
 import ClockIcon from "../../icons/clock.svg"
-import MenuCalendarIcon from "../../icons/menu-calendar.svg"
+import MenuCalendarIcon from "../../icons/menu-calendar.js"
 import GroupIcon from "../../icons/group.svg"
 import MessagesIcon from "../../icons/messages.svg"
 import TasksIcon from "../../icons/tasks.svg"
-import MenuIcon from "../../icons/menu.svg"
+import MenuIcon from "../../icons/menu.js"
 import { Box } from "@material-ui/core"
 import { IconButton as CustomIconButton } from "../CustomButtons"
 
@@ -40,8 +40,9 @@ const useStyles = makeStyles(theme => ({
   appBar: {
     backgroundColor: "white",
     color: theme.palette.primary.dark,
-    // boxShadow: "none",
-    height: 100,
+    boxShadow: "none",
+    paddingBottom: 12,
+    height: "auto",
     [theme.breakpoints.up("sm")]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -89,12 +90,12 @@ const MENU_ITEMS = [
   {
     label: "Mesas",
     path: "/admin/mesas",
-    icon: <MesasIcon />,
+    icon: <MesasIcon fill="white" />,
   },
   {
     label: "Reservas",
     path: "/admin/reservas",
-    icon: <MenuCalendarIcon />,
+    icon: <MenuCalendarIcon fill="white" />,
   },
   {
     label: "Clientes",
@@ -139,7 +140,7 @@ function ResponsiveDrawer(props) {
         >
           <MailIcon
             color="primary"
-            style={{ marginRight: 18, marginLeft: 12 }}
+            style={{ marginRight: 8, marginLeft: 8 }}
           />
           <span
             style={{
@@ -184,13 +185,29 @@ function ResponsiveDrawer(props) {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
-        <Box display="flex" alignItems="center" justifyContent="flex-end">
+        <Box
+          display="flex"
+          alignItems="center"
+          marginTop={1}
+          justifyContent="flex-end"
+        >
           <Box>
             <CustomIconButton
               onClick={handleDrawerToggle}
-              icon={<MenuIcon />}
+              style={{ marginBottom: 4 }}
+              icon={<MenuIcon stroke={theme.palette.primary.dark} />}
             />
-            <CustomIconButton icon={<MesasIcon />} />
+            <CustomIconButton
+              icon={<MesasIcon fill={theme.palette.primary.dark} />}
+            />
+          </Box>
+          <Box marginLeft={1}>
+            <CustomIconButton
+              icon={<MenuCalendarIcon fill={theme.palette.primary.dark} />}
+              label="Hoy"
+              height="104px"
+              variant="vertical"
+            />
           </Box>
         </Box>
       </AppBar>
@@ -227,35 +244,6 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
       </main>
     </div>
   )

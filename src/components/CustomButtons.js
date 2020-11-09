@@ -97,7 +97,11 @@ export function IconButton({
       className={classes.iconButtonContainer}
       {...rest}
     >
-      <Box width={iconWidth} height={iconHeight}>
+      <Box
+        width={iconWidth}
+        marginBottom={variant === "vertical" ? 1 : 0}
+        height={iconHeight}
+      >
         {icon}
       </Box>
       <span className={classes.iconButtonLabel}>{label}</span>

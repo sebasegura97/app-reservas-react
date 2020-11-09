@@ -1,6 +1,6 @@
 import { Box, makeStyles, Typography } from "@material-ui/core"
 import React from "react"
-import CalendarIcon from "../../../icons/calendar.svg"
+import CalendarIcon from "../../../icons/calendar.js"
 import ClockIcon from "../../../icons/clock.svg"
 import GroupIcon from "../../../icons/group.svg"
 
