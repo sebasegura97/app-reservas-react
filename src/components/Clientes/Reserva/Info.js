@@ -41,7 +41,7 @@ export default function Info() {
       <Box className={classes.content}>
         <Box marginTop={1} className={classes.row}>
           <Box className={classes.icon} width={16}>
-            <CalendarIcon />
+            <CalendarIcon fill="white" />
           </Box>
           <Typography color="inherit" variant="body2">
             24 / 09 / 2020

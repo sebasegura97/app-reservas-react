@@ -42,7 +42,21 @@ const useStyles = makeStyles(theme => ({
     boxShadow: "0px 3px 6px #E5F0F8",
     padding: theme.spacing(2),
     borderRadius: 4,
+    color: theme.palette.primary.dark,
+    fill: theme.palette.primary.dark,
+    transition: ".3s",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.main,
+      boxShadow: "none",
+      color: "white",
+      fill: "white",
+      transition: ".3s"
+    },
   },
+  // iconButtonIcon: {
+  //   fill: theme.palette.primary.dark,
+  // },
+
   iconButtonLabel: {},
 }))
 
@@ -102,7 +116,7 @@ export function IconButton({
         marginBottom={variant === "vertical" ? 1 : 0}
         height={iconHeight}
       >
-        {icon}
+        {icon({ style: { fill: "inherit" } })}
       </Box>
       <span className={classes.iconButtonLabel}>{label}</span>
     </Box>

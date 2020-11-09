@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   appBar: {
-    backgroundColor: "white",
+    backgroundColor: theme.palette.background.default,
     color: theme.palette.primary.dark,
     boxShadow: "none",
     paddingBottom: 12,
@@ -138,10 +138,7 @@ function ResponsiveDrawer(props) {
           alignItems="center"
           className={classes.toolbarTopContent}
         >
-          <MailIcon
-            color="primary"
-            style={{ marginRight: 8, marginLeft: 8 }}
-          />
+          <MailIcon color="primary" style={{ marginRight: 8, marginLeft: 8 }} />
           <span
             style={{
               color: theme.palette.text.primary,
@@ -195,15 +192,13 @@ function ResponsiveDrawer(props) {
             <CustomIconButton
               onClick={handleDrawerToggle}
               style={{ marginBottom: 4 }}
-              icon={<MenuIcon stroke={theme.palette.primary.dark} />}
+              icon={MenuIcon}
             />
-            <CustomIconButton
-              icon={<MesasIcon fill={theme.palette.primary.dark} />}
-            />
+            <CustomIconButton icon={MesasIcon} />
           </Box>
           <Box marginLeft={1}>
             <CustomIconButton
-              icon={<MenuCalendarIcon fill={theme.palette.primary.dark} />}
+              icon={MenuCalendarIcon}
               label="Hoy"
               height="104px"
               variant="vertical"
