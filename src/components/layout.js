@@ -29,7 +29,7 @@ const theme = createMuiTheme({
   typography: {
     allVariants: {
       color: "#303481",
-      fontFamily: "Avenir",
+      fontFamily: "Lato",
     },
   },
 })
