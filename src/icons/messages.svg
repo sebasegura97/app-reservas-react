@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 31.66">
+    <defs>
+        <style>
+            .prefix__cls-1 {
+                fill: #fff
+            }
+        </style>
+    </defs>
+    <g id="prefix__Capa_2" data-name="Capa 2">
+        <g id="prefix__Capa_1-2" data-name="Capa 1">
+            <path id="prefix__Trazado_856" data-name="Trazado 856" class="prefix__cls-1"
+                d="M30 0H3.33A3.33 3.33 0 000 3.33v15a3.34 3.34 0 003.33 3.34H30a3.34 3.34 0 003.33-3.34v-15A3.33 3.33 0 0030 0zm0 7.5l-11.5 5.8a3.9 3.9 0 01-1.83.45 3.77 3.77 0 01-1.86-.46L3.33 7.5V4.7L16 11.07a1.49 1.49 0 001.38 0L30 4.7z" />
+            <path id="prefix__Trazado_857" data-name="Trazado 857" class="prefix__cls-1"
+                d="M36.67 10v8.33A6.68 6.68 0 0130 25H6.67v3.33A3.33 3.33 0 0010 31.66h26.67A3.33 3.33 0 0040 28.33v-15A3.33 3.33 0 0036.67 10z" />
+        </g>
+    </g>
+</svg>

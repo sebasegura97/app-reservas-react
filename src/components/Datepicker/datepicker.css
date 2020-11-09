@@ -1,0 +1,36 @@
+.calendar {
+  background-color: transparent;
+  border: none;
+  font-family: "Avenir";
+  /* width: 100%; */
+}
+
+.calendar .react-datepicker__header {
+  background-color: transparent;
+  border: none;
+  /* width: 100%; */
+}
+
+.calendar .react-datepicker__day-name {
+  width: 2.4rem;
+  font-weight: bold;
+  color: #303481;
+}
+.calendar .react-datepicker__day {
+  line-height: 1;
+  width: 2.4rem;
+  height: 2.2rem;
+  display: inline-grid;
+  align-items: center;
+  color: #303481;
+}
+
+.calendar .react-datepicker__day--keyboard-selected {
+  background-color: #2063ff;
+  border-radius: 8px;
+  color: white;
+}
+
+.react-datepicker__week div:focus {
+  outline: none;
+}

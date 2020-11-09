@@ -1,49 +1,54 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.com/docs/use-static-query/
- */
-
-import React from "react"
+import { Box } from "@material-ui/core"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import { createMuiTheme } from "@material-ui/core/styles"
+import { ThemeProvider } from "@material-ui/styles"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+import React, { useState } from "react"
+// import Footer from "./Footer"
+import Header from "./Header"
+import Viewport from "./Viewport"
 
-import Header from "./header"
-import "./layout.css"
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#2063FF",
+      light: "#7390B7",
+      dark: "#303481"
+    },
+    secondary: {
+      main: "#A10013",
+    },
+    text: {
+      primary: "#303481",
+      secondary: "#7390B7",
+    },
+    background: {
+      default: "#F8F7F8",
+    },
+  },
+  typography: {
+    allVariants: {
+      color: "#303481",
+      fontFamily: "Avenir",
+    },
+  },
+})
 
-const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
-
+const TopLayout = ({ children }) => {
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer style={{
-          marginTop: `2rem`
-        }}>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.com">Gatsby</a>
-        </footer>
-      </div>
+      <Viewport />
+      <ThemeProvider theme={theme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
     </>
   )
+}
+
+const Layout = ({ children }) => {
+  return <TopLayout>{children}</TopLayout>
 }
 
 Layout.propTypes = {
