@@ -1,11 +1,8 @@
-import { Box } from "@material-ui/core"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { createMuiTheme } from "@material-ui/core/styles"
 import { ThemeProvider } from "@material-ui/styles"
 import PropTypes from "prop-types"
-import React, { useState } from "react"
-// import Footer from "./Footer"
-import Header from "./Header"
+import React from "react"
 import Viewport from "./Viewport"
 
 const theme = createMuiTheme({
@@ -13,7 +10,7 @@ const theme = createMuiTheme({
     primary: {
       main: "#2063FF",
       light: "#7390B7",
-      dark: "#303481"
+      dark: "#303481",
     },
     secondary: {
       main: "#A10013",
