@@ -8,7 +8,7 @@ import Layout from "../components/Layout.js"
 
 const ReservarPage = () => {
   const [context, setContext] = useState({
-    step: 2,
+    step: 0,
     cantidadDePersonas: null,
     dia: new Date(),
     hora: "",
