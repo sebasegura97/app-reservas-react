@@ -1,6 +1,6 @@
 import { Box, Button, makeStyles } from "@material-ui/core"
-import React from "react"
 import PropTypes from "prop-types"
+import React from "react"
 
 const useStyles = makeStyles(theme => ({
   primary: {
@@ -15,6 +15,10 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 8,
     textTransform: "none",
     boxShadow: "none",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.dark,
+      boxShadow: "none",
+    },
   },
   secondary: {
     [theme.breakpoints.down("sm")]: {
@@ -50,14 +54,9 @@ const useStyles = makeStyles(theme => ({
       boxShadow: "none",
       color: "white",
       fill: "white",
-      transition: ".3s"
+      transition: ".3s",
     },
   },
-  // iconButtonIcon: {
-  //   fill: theme.palette.primary.dark,
-  // },
-
-  iconButtonLabel: {},
 }))
 
 export function PrimaryButton({ children, ...rest }) {
@@ -118,7 +117,11 @@ export function IconButton({
       >
         {icon({ style: { fill: "inherit" } })}
       </Box>
-      <span className={classes.iconButtonLabel}>{label}</span>
+      {label && (
+        <span style={{ marginLeft: variant === "horizontal" ? 8 : 0 }}>
+          {label}
+        </span>
+      )}
     </Box>
   )
 }

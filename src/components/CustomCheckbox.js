@@ -1,13 +1,8 @@
-import React from "react"
-import clsx from "clsx"
-import { makeStyles } from "@material-ui/core/styles"
+import { Box, Typography } from "@material-ui/core"
 import Checkbox from "@material-ui/core/Checkbox"
-import {
-  Box,
-  FormControl,
-  FormControlLabel,
-  Typography,
-} from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
+import clsx from "clsx"
+import React from "react"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,18 +56,25 @@ function StyledCheckbox(props) {
   )
 }
 
-export default function CustomCheckbox({ checkboxProps, label }) {
+export default function CustomCheckbox({
+  checkboxProps,
+  label,
+  labelComponent,
+}) {
   return (
     <Box display="flex" flexDirection="row" alignItems="center">
       <StyledCheckbox name="checked" props={checkboxProps} />
-      <Typography
-        variant="body1"
-        color="textSecondary"
-        style={{ lineHeight: 1, paddingTop: 4 }}
-      >
-        {" "}
-        {label}
-      </Typography>
+      {labelComponent && labelComponent}
+      {label && (
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          style={{ lineHeight: 1, paddingTop: 4 }}
+        >
+          {" "}
+          {label}
+        </Typography>
+      )}
     </Box>
   )
 }

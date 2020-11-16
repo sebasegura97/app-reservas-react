@@ -1,17 +1,23 @@
-import React from "react"
-import { Router } from "@reach/router"
-import Layout from "../components/Layout"
-import Mesas from "../components/Admin/Routes/Mesas.js"
+import React, { useState } from "react"
+import { ContextAdmin } from "../components/Admin/ContextAdmin"
 import AdminLayout from "../components/Admin/Layout"
+import Routes from "../components/Admin/Routes"
+import Layout from "../components/Layout"
 
 export default function Admin() {
+  const [context, setContext] = useState({
+    dayOfWeek: new Date(),
+    drawerOpen: false,
+  })
+
   return (
     <Layout>
-      <AdminLayout>
-        <Router basepath="/admin">
-          <Mesas path="/mesas" />
-        </Router>
-      </AdminLayout>
+      <ContextAdmin.Provider value={{ context, setContext }}>
+        <AdminLayout>
+          {/* <DrawerNavigation /> */}
+          <Routes />
+        </AdminLayout>
+      </ContextAdmin.Provider>
     </Layout>
   )
 }

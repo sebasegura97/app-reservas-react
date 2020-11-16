@@ -2,10 +2,12 @@ import { Box, IconButton, makeStyles, Typography } from "@material-ui/core"
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos"
 import { getYear } from "date-fns"
-import React, { useState } from "react"
-import DatePicker from "react-datepicker"
+import React from "react"
 import "react-datepicker/dist/react-datepicker.css"
 import "./datepicker.css"
+import DatePicker, { registerLocale } from "react-datepicker"
+import es from "date-fns/locale/es" // the locale you want
+registerLocale("es", es) // register it with the name you want
 
 const MONTHS = [
   "Enero",
@@ -21,16 +23,6 @@ const MONTHS = [
   "Noviembre",
   "Diciembre",
 ]
-
-const DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-
-const locale = {
-  localize: {
-    month: n => MONTHS[n],
-    day: n => DAYS[n],
-  },
-  formatLong: {},
-}
 
 const useStyles = makeStyles(theme => ({
   headerDate: {
@@ -80,23 +72,16 @@ const renderHeader = ({
   )
 }
 
-export default function Datepicker() {
-  const [selectedDate, setSelectedDate] = useState(new Date())
+export default function Datepicker(props) {
   const classes = useStyles()
-  const handleDateChange = date => {
-    setSelectedDate(date)
-  }
 
   return (
     <DatePicker
       inline
-      value={selectedDate}
-      onChange={handleDateChange}
       renderCustomHeader={props => renderHeader({ ...props, classes })}
       calendarClassName="calendar"
-      locale={locale}
-      // dayClassName={classes.day}
-      //   calendarContainer={}
+      locale="es"
+      {...props}
     />
   )
 }

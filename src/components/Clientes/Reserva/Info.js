@@ -1,11 +1,12 @@
 import { Box, makeStyles, Typography } from "@material-ui/core"
-import React from "react"
+import React, { useContext } from "react"
 import CalendarIcon from "../../../icons/calendar.js"
-import ClockIcon from "../../../icons/clock.svg"
-import GroupIcon from "../../../icons/group.svg"
+import ClockIcon from "../../../icons/clock.js"
+import GroupIcon from "../../../icons/group.js"
+import { ContextReserva } from "./ContextReserva.js"
 
 const useStyles = makeStyles(theme => ({
-container: {
+  container: {
     border: `2px solid ${theme.palette.primary.main}`,
   },
   content: {
@@ -22,15 +23,19 @@ container: {
   icon: {
     marginRight: theme.spacing(3),
     marginLeft: theme.spacing(2),
+    fill: "white"
   },
   header: {
     color: theme.palette.primary.main,
-    fontWeight: 400
-  }
+    fontWeight: 400,
+  },
 }))
 
 export default function Info() {
   const classes = useStyles()
+  const { context } = useContext(ContextReserva)
+  console.log("context desde info", context)
+
   return (
     <Box className={classes.container}>
       <Box padding={1}>
@@ -44,7 +49,9 @@ export default function Info() {
             <CalendarIcon fill="white" />
           </Box>
           <Typography color="inherit" variant="body2">
-            24 / 09 / 2020
+            { context.dia.getDate() } /{" "}
+            { context.dia.getMonth() + 1 } /{" "}
+            { context.dia.getFullYear() }
           </Typography>
         </Box>
         <Box className={classes.row}>
@@ -52,7 +59,7 @@ export default function Info() {
             <ClockIcon />
           </Box>
           <Typography color="inherit" variant="body2">
-            13:30
+            {context.hora}
           </Typography>
         </Box>
         <Box className={classes.row}>
@@ -60,7 +67,7 @@ export default function Info() {
             <GroupIcon />
           </Box>
           <Typography color="inherit" variant="body2">
-            Grupo
+            {context.cantidadDePersonas}
           </Typography>
         </Box>
       </Box>

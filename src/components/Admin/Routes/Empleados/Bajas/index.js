@@ -1,11 +1,9 @@
 import React from 'react'
 
-function Mesas() {
+export default function Bajas() {
     return (
         <div>
-            Mesas
+            Bajas
         </div>
     )
 }
-
-export default Mesas

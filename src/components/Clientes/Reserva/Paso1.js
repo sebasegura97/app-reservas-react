@@ -2,74 +2,35 @@ import {
   Box,
   Grid,
   InputLabel,
-  makeStyles,
+  LinearProgress,
   MenuItem,
   Select,
   Slide,
-  Typography,
-  useTheme,
+
+  useTheme
 } from "@material-ui/core"
-import "moment/locale/es"
-import React, { useContext, useState } from "react"
+import { useParams } from "@reach/router"
+import React, { useContext, useEffect, useState } from "react"
+import { get } from "../../../services/httpClient"
 import CustomBreadcrumb from "../../CustomBreadcrumb"
 import { PrimaryButton } from "../../CustomButtons"
 import CustomInput from "../../CustomInput"
 import Datepicker from "../../Datepicker/Datepicker"
+import SquaresPicker from "../../SquaresPicker"
 import { ContextReserva } from "./ContextReserva"
+import OpcionesDisponibles from "./OpcionesDisponibles"
 
-const useStyles = makeStyles(theme => ({
-  quantityPicker: {
-    borderRadius: 8,
-    padding: 0,
-    // width: 48,
-    height: 48,
-    lineHeight: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    transition: ".3s",
-    "&:hover": {
-      cursor: "pointer",
-    },
-  },
-}))
-
-const hours = [
-  "8:00",
-  "8:30",
-  "9:00",
-  "9:30",
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "12:00",
-  "12:30",
-  "13:00",
-  "13:30",
-  "14:00",
-  "14:30",
-  "15:00",
-  "15:30",
-  "16:00",
-  "16:30",
-  "17:00",
-  "17:30",
-  "18:00",
-  "18:30",
-  "19:00",
-  "19:30",
-  "20:00",
-  "20:30",
-  "21:00",
-  "21:30",
-  "22:00",
-  "22:30",
-]
-const quantities = ["1", "2", "3", "4", "5", "+"]
-
-function MyTimePicker() {
+function MyTimePicker({ hours, ...rest }) {
   const theme = useTheme()
+  const { context } = useContext(ContextReserva)
+  const [value, setValue] = useState("")
+  const { hora } = context
+
+  useEffect(() => {
+    const newValue = hours.includes(hora) ? hora : ""
+    setValue(newValue)
+  }, [hora, hours])
+
   return (
     <>
       <InputLabel
@@ -84,7 +45,8 @@ function MyTimePicker() {
         labelId="age-label"
         id="demo-simple-select"
         input={<CustomInput />}
-        defaultValue="8:30"
+        value={value}
+        {...rest}
       >
         {hours.map((value, index) => (
           <MenuItem key={index} value={value}>
@@ -96,112 +58,216 @@ function MyTimePicker() {
   )
 }
 
-function MyQuantityPicker({ value, onClick }) {
-  //   const [selectedDate, handleDateChange] = useState(new Date())
-  const theme = useTheme()
-  const classes = useStyles()
+function getHorariosUrl({ dia, resto }) {
+  const fecha = `${dia.getDate()}/${dia.getMonth() + 1}/${dia.getFullYear()}`
+  const url = `cliente/reservas/obtenerhorariosdisponibles.json?resto=${resto}&fechaseleccionada=${fecha}`
+  return url
+}
 
-  const handleClick = quantity => {
-    if (onClick) {
-      onClick(quantity)
+function getVerificacionUrl({ resto, fecha, hora, comensales }) {
+  const fechaseleccionada = `${fecha.getDate()}/${
+    fecha.getMonth() + 1
+  }/${fecha.getFullYear()}`
+  const url = `/cliente/reservas/verificareserva.json?resto=${resto}&fechaseleccionada=${fechaseleccionada}&horaseleccionada=${hora}&comensales=${comensales}`
+  return url
+}
+
+// Componente principal
+export default function Paso1() {
+  const squares = ["1", "2", "3", "4", "5", "6", "+"]
+  const today = new Date()
+  const { resto } = useParams()
+  const { context, setContext, nextStep, openSnackbar } = useContext(
+    ContextReserva
+  )
+  const [showInputCantidad, setShowInputCantidad] = useState(false)
+  const [showAlternativas, setShowAlternativas] = useState(false)
+  const [horarios, setHorarios] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [url, setUrl] = useState(() =>
+    getHorariosUrl({ dia: context.dia, resto })
+  )
+
+  const handleQuantityPicker = cantidadDePersonas => {
+    if (cantidadDePersonas === "+") {
+      setShowInputCantidad(true)
+    } else {
+      setContext({ ...context, cantidadDePersonas })
     }
   }
 
+  const showSuccessFeedback = () => {
+    openSnackbar({
+      severity: "success",
+      message: `Se ha encontrado disponibilidad para ${
+        context.cantidadDePersonas
+      } personas el dia
+      ${context.dia.getDate()}/${context.dia.getMonth()}/${context.dia.getFullYear()} a hs ${
+        context.hora
+      }`,
+    })
+  }
+
+  const showErrorFeedback = () => {
+    openSnackbar({
+      severity: "error",
+      message: `No se ha encontrado disponibilidad para ${
+        context.cantidadDePersonas
+      } personas el dia
+      ${context.dia.getDate()}/${context.dia.getMonth()}/${context.dia.getFullYear()} a hs ${
+        context.hora
+      }`,
+    })
+  }
+
+  const validateInputs = () => {
+    const { dia, hora, cantidadDePersonas } = context
+    if (!dia) {
+      return {
+        ok: false,
+        message: "Seleccione un día en el calendario.",
+      }
+    } else if (hora === "" || !hora) {
+      return {
+        ok: false,
+        message: "Seleccione un horario.",
+      }
+    } else if (cantidadDePersonas === "" || !cantidadDePersonas) {
+      return {
+        ok: false,
+        message: "Ingrese la cantidad de personas.",
+      }
+    } else {
+      return { ok: true }
+    }
+  }
+
+  async function verificarReserva() {
+    const url = getVerificacionUrl({
+      resto,
+      fecha: context.dia,
+      hora: context.hora,
+      comensales: context.cantidadDePersonas,
+    })
+    try {
+      const { data } = await get(url)
+      return data.respuesta
+    } catch (error) {
+      console.error(error)
+      return false
+    }
+  }
+
+  const handleInputChange = e => {
+    setContext({ ...context, [e.target.name]: e.target.value })
+  }
+
+  const handleDatepickerChange = date => {
+    const newUrl = getHorariosUrl({ dia: date, resto })
+    setUrl(newUrl)
+    setContext({ ...context, dia: date })
+  }
+
+  const handleButtonContinuar = async () => {
+    const validation = validateInputs()
+    if (validation.ok) {
+      const response = await verificarReserva()
+      if (response === true) {
+        showSuccessFeedback()
+        // setShowAlternativas(true)
+        nextStep()
+      } else {
+        setShowAlternativas(true)
+        showErrorFeedback()
+      }
+    } else {
+      openSnackbar({
+        severity: "error",
+        message: validation.message,
+      })
+    }
+  }
+
+  const handleCloseOpcionesDisponibles = () => {
+    setShowAlternativas(false)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      const result = await get(url)
+      setHorarios(result.data.horarios)
+      setLoading(false)
+    }
+    fetchData()
+  }, [url])
+
   return (
     <>
-      <InputLabel
-        style={{ marginBottom: 12, color: theme.palette.primary.dark }}
-        id="age-label"
-      >
-        Cantidad de personas
-      </InputLabel>
-      <Box
-        display="grid"
-        gridGap={8}
-        gridAutoFlow="row-dense"
-        gridAutoRows="50px"
-        gridTemplateColumns={{ xs: "repeat(6, 1fr)", sm: "repeat(6, 1fr)" }}
-      >
-        {quantities.map((quantity, index) => (
-          <Box
-            key={index}
-            onClick={() => handleClick(quantity)}
-            className={classes.quantityPicker}
-            style={{
-              background:
-                value === quantity
-                  ? theme.palette.primary.main
-                  : theme.palette.background.default,
-              color: theme.palette.text.primary,
-            }}
-          >
-            <Typography
-              style={{
-                color:
-                  value === quantity ? "white" : theme.palette.text.primary,
-              }}
-            >
-              {quantity}
-            </Typography>
+      {!showAlternativas ? (
+        <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+          <Box maxWidth={{ xs: 300, md: 800 }} margin="auto" paddingTop={4}>
+            <Grid container alignItems="center">
+              <Grid item xs={12}>
+                <CustomBreadcrumb />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Datepicker
+                  onChange={handleDatepickerChange}
+                  value={context.dia}
+                  minDate={today}
+                  fixedHeight
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box marginBottom={2}>
+                  <MyTimePicker
+                    name="hora"
+                    hours={horarios}
+                    onChange={handleInputChange}
+                  />
+                  {loading && <LinearProgress />}
+                </Box>
+                {!showInputCantidad ? (
+                  <SquaresPicker
+                    value={context.cantidadDePersonas}
+                    onClick={handleQuantityPicker}
+                    squares={squares}
+                    label={"Cantidad de personas"}
+                    squaresByRow={7}
+                  />
+                ) : (
+                  <Slide in={true} direction="left">
+                    <CustomInput
+                      fullWidth
+                      type="text"
+                      name="cantidadDePersonas"
+                      placeholder="Cantidad de personas"
+                      value={context.cantidadDePersonas}
+                      onChange={handleInputChange}
+                    />
+                  </Slide>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <Box marginTop={4}>
+                  <PrimaryButton
+                    variant="contained"
+                    color="primary"
+                    onClick={handleButtonContinuar}
+                    style={{ float: "right" }}
+                  >
+                    {" "}
+                    Continuar{" "}
+                  </PrimaryButton>
+                </Box>
+              </Grid>
+            </Grid>
           </Box>
-        ))}
-      </Box>
+        </Slide>
+      ) : (
+        <OpcionesDisponibles close={handleCloseOpcionesDisponibles} />
+      )}
     </>
   )
 }
-
-function Paso1() {
-  const [state, setState] = useState({
-    cantidadDePersonas: "5",
-    dia: new Date(),
-    hora: new Date(),
-  })
-  const { setContext } = useContext(ContextReserva)
-
-  const handleQuantityPicker = cantidadDePersonas => {
-    setState({ ...state, cantidadDePersonas })
-  }
-
-  const handleSubmit = () => {
-    setContext({ step: 1 })
-  }
-
-  return (
-    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-      <Box maxWidth={{ xs: 300, md: 800 }} margin="auto">
-        <Grid container alignItems="center">
-          <Grid item xs={12}>
-            <CustomBreadcrumb />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Datepicker />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Box marginBottom={2}>
-              <MyTimePicker />
-            </Box>
-            <MyQuantityPicker
-              value={state.cantidadDePersonas}
-              onClick={handleQuantityPicker}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Box marginTop={4}>
-              <PrimaryButton
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
-                style={{ float: "right" }}
-              >
-                {" "}
-                Continuar{" "}
-              </PrimaryButton>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-    </Slide>
-  )
-}
-
-export default Paso1

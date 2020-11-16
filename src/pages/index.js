@@ -1,10 +1,12 @@
 import React from "react"
-import Layout from "../components/Layout"
+import Layout from "../components/Layout.js"
 
-const IndexPage = () => (
-  <Layout>
-    <h1>Hola mundo</h1>
-  </Layout>
-)
+const Index = () => {
+  return (
+    <Layout>
+      <h1> Sistema de reservas </h1>
+    </Layout>
+  )
+}
 
-export default IndexPage
+export default Index

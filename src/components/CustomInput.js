@@ -1,5 +1,4 @@
 import { InputBase, withStyles } from "@material-ui/core"
-import React from "react"
 
 const CustomInput = withStyles(theme => ({
   input: {
@@ -14,7 +13,8 @@ const CustomInput = withStyles(theme => ({
     paddingLeft: 16,
     '&::placeholder': {
       fontWeight: 400,
-      color: theme.palette.text.secondary
+      fontSize: 18,
+      color: theme.palette.text.primary
     },
     // Use the system font instead of the default Roboto font.
     "&:focus": {

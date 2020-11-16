@@ -1,6 +1,6 @@
 import { Box, Breadcrumbs, Typography, useTheme } from "@material-ui/core"
-import React from "react"
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos"
+import React from "react"
 
 export default function CustomBreadcrumb({ containerClass, containerStyle }) {
   const theme = useTheme()
