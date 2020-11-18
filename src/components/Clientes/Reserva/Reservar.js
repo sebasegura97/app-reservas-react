@@ -4,9 +4,10 @@ import { ContextReserva } from "./ContextReserva"
 import Paso1 from "./Paso1"
 import Paso2 from "./Paso2"
 import Paso3 from "./Paso3"
+import Success from "./Success"
 
 export default function Reservar() {
-  const steps = [<Paso1 />, <Paso2 />, <Paso3 />]
+  const steps = [<Paso1 />, <Paso2 />, <Paso3 />, <Success />]
   const { context } = useContext(ContextReserva)
 
   return (

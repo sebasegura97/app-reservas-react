@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.dark,
     border: `1px solid ${theme.palette.primary.dark}`,
     "&:hover": {
+      border: `1px solid ${theme.palette.primary.dark}`,
       backgroundColor: theme.palette.background.default,
       boxShadow: "none",
     },

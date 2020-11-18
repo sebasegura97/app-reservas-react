@@ -24,6 +24,7 @@
     "gatsby-theme-material-ui": "^1.0.13",
     "gatsby-transformer-remark": "^2.8.27",
     "gatsby-transformer-sharp": "^2.5.21",
+    "libphonenumber-js": "^1.9.4",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
@@ -31,7 +32,8 @@
     "react-dom": "^16.12.0",
     "react-helmet": "^6.1.0",
     "react-material-ui-form-validator": "^2.1.1",
-    "svg-react-loader": "^0.4.6"
+    "svg-react-loader": "^0.4.6",
+    "swiper": "^6.3.5"
   },
   "devDependencies": {
     "prettier": "2.1.2"

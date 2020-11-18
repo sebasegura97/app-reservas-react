@@ -6,8 +6,7 @@ import {
   MenuItem,
   Select,
   Slide,
-
-  useTheme
+  useTheme,
 } from "@material-ui/core"
 import { useParams } from "@reach/router"
 import React, { useContext, useEffect, useState } from "react"
@@ -174,7 +173,6 @@ export default function Paso1() {
       const response = await verificarReserva()
       if (response === true) {
         showSuccessFeedback()
-        // setShowAlternativas(true)
         nextStep()
       } else {
         setShowAlternativas(true)

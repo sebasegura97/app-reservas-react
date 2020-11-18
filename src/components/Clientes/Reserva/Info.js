@@ -34,7 +34,6 @@ const useStyles = makeStyles(theme => ({
 export default function Info() {
   const classes = useStyles()
   const { context } = useContext(ContextReserva)
-  console.log("context desde info", context)
 
   return (
     <Box className={classes.container}>

@@ -1,22 +1,22 @@
-import {
-  Box,
-  CircularProgress,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-  useTheme,
-} from "@material-ui/core"
+import { Box, CircularProgress, Typography, useTheme } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useParams } from "@reach/router"
-import React, { useContext, useEffect, useState } from "react"
-import { get } from "../../../services/httpClient"
-import { getDayName } from "../../../utils/date"
 import { format } from "date-fns"
 import es from "date-fns/locale/es"
-import CustomInput from "../../CustomInput"
+import React, { useContext, useEffect, useState } from "react"
+import SwiperCore, { A11y, Scrollbar } from "swiper"
+import { Swiper, SwiperSlide } from "swiper/react"
+// Import Swiper styles
+import "swiper/swiper-bundle.css"
+import { get } from "../../../services/httpClient"
+import { getDayName } from "../../../utils/date"
+import CustomAlert from "../../CustomAlert"
+import { PrimaryButton, SecondaryButton } from "../../CustomButtons"
 import { ContextReserva } from "./ContextReserva"
-import { PrimaryButton } from "../../CustomButtons"
-import SquaresPicker from "../../SquaresPicker"
+
+// install Swiper components
+SwiperCore.use([Scrollbar, A11y])
 
 function getUrl({ cantidadDePersonas, dia, hora, resto }) {
   const fechaseleccionada = `${dia.getDate()}/${
@@ -25,7 +25,7 @@ function getUrl({ cantidadDePersonas, dia, hora, resto }) {
   return `cliente/reservas/obtenerhorariosdisponiblessemana.json?resto=${resto}&fechaseleccionada=${fechaseleccionada}&horaseleccionada=${hora}&comensales=${cantidadDePersonas}`
 }
 
-const LoadingFeedback = ({ label }) => {
+const LoadingFeedback = ({ title, description }) => {
   return (
     <Box
       display="flex"
@@ -34,12 +34,11 @@ const LoadingFeedback = ({ label }) => {
       justifyContent="center"
     >
       <Typography variant="h4" align="center">
-        {" "}
-        Aguarde un instante por favor{" "}
+        {title}
       </Typography>
       <Typography variant="subtitle1" align="center">
         {" "}
-        Estamos buscando opciones que te puedan interesar.{" "}
+        ´{description}
       </Typography>
       <Box marginTop={4}>
         <CircularProgress size={128} />{" "}
@@ -48,13 +47,60 @@ const LoadingFeedback = ({ label }) => {
   )
 }
 
+const useStyles = makeStyles(theme => ({
+  swiperContainer: {
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+
+  horario: {
+    borderRadius: 8,
+    backgroundColor: theme.palette.background.default,
+    transition: ".3s",
+  },
+
+  horarioSelected: {
+    borderRadius: 8,
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+    transition: ".3s",
+  },
+
+  horarioSuggested: {
+    borderRadius: 8,
+    backgroundColor: theme.palette.grey[800],
+    color: "white",
+    transition: ".3s",
+  },
+}))
+
 export default function OpcionesDisponibles({ close }) {
   const theme = useTheme()
+  const xs = useMediaQuery(theme.breakpoints.only("xs"))
   const [opciones, setOpciones] = useState([])
+  const [selected, setSelected] = useState(null)
   const [loading, setLoading] = useState(false)
-  const { context, setContext } = useContext(ContextReserva)
+  const { context, setContext, nextStep } = useContext(ContextReserva)
   const { cantidadDePersonas, dia, hora } = context
   const { resto } = useParams()
+  const classes = useStyles()
+
+  const handleDateSelect = ({ date, hora }) => {
+    const formattedDate = format(date, "dd/MM/yyyy")
+    setSelected(`${formattedDate}-${hora}`)
+    setContext({ ...context, dia: date, hora })
+  }
+
+  const handleNext = () => {
+    if (selected) {
+      nextStep()
+    }
+  }
+
+  const handleCancel = () => {
+    close()
+  }
 
   useEffect(() => {
     const url = getUrl({ cantidadDePersonas, dia, hora, resto })
@@ -82,54 +128,95 @@ export default function OpcionesDisponibles({ close }) {
   return (
     <Box
       paddingRight={2}
+      paddingTop={4}
       paddingLeft={2}
-      width={{ xs: "100%", sm: 800 }}
+      width={{ xs: "100%", sm: 600 }}
       margin="auto"
     >
       {!loading ? (
         <>
           {opciones.length ? (
-            opciones.map(opcion => {
-              if (opcion.fecha && opcion.horarios && opcion.horarios.length) {
-                const date = new Date(opcion.fecha)
-                const dayOfWeek = getDayName({ dayNumber: date.getDay() })
-                const formattedDate = format(date, "dd/MM/yyyy", { locale: es })
-                const label = `${dayOfWeek} ${formattedDate}`
-                return (
-                  <>
-                    <SquaresPicker
-                      squaresByRow={10}
-                      label={label}
-                      squares={opcion.horarios}
-                    />
-                    {/* <InputLabel
-                      style={{
-                        marginBottom: 12,
-                        marginTop: 18,
-                        color: theme.palette.primary.dark,
-                      }}
+            <>
+              <Box marginBottom={2}>
+                <CustomAlert
+                  title="No hay disponibilidad"
+                  body="No hay disponibilidad para 4 personas a las 20:00 el día 23/09/2020. Otras fechas compatibles:"
+                />
+              </Box>
+              {opciones.map(opcion => {
+                if (opcion.fecha && opcion.horarios && opcion.horarios.length) {
+                  const date = new Date(opcion.fecha)
+                  const dayOfWeek = getDayName({
+                    dayNumber: date.getDay(),
+                    shortname: true,
+                  })
+                  const formattedDate = format(date, "dd/MM/yyyy", {
+                    locale: es,
+                  })
+
+                  return (
+                    <Box
+                      key={`dia-${formattedDate}`}
+                      marginBottom={2}
+                      className={classes.swiperContainer}
                     >
-                      <strong>
-                        {getDayName({ dayNumber: date.getDay() })}
-                      </strong>{" "}
-                      {format(date, "dd/MM/yyyy", { locale: es })}
-                    </InputLabel>
-                    <Select
-                      variant="filled"
-                      fullWidth
-                      input={<CustomInput />}
-                      value={context.hora}
-                    >
-                      {opcion.horarios.map((value, index) => (
-                        <MenuItem key={index} value={value}>
-                          {value}
-                        </MenuItem>
-                      ))}
-                    </Select> */}
-                  </>
-                )
-              }
-            })
+                      <Typography
+                        variant="subtitle1"
+                        style={{ marginBottom: 8 }}
+                      >
+                        <strong>{`${dayOfWeek}.`}</strong> {`${formattedDate}`}
+                      </Typography>
+                      <Swiper
+                        spaceBetween={8}
+                        slidesPerView={xs ? "auto" : 7}
+                        onSwiper={swiper => console.log(swiper)}
+                        onSlideChange={() => console.log("slide change")}
+                      >
+                        {opcion.horarios.map(hora => {
+                          const key = `${formattedDate}-${hora}`
+                          const isSuggested = context.hora === hora
+                          return (
+                            <SwiperSlide
+                              key={key}
+                              onClick={() => handleDateSelect({ date, hora })}
+                            >
+                              <Box
+                                padding={1}
+                                display="flex"
+                                flexDirection="row"
+                                alignContent="center"
+                                justifyContent="center"
+                                className={
+                                  selected === key
+                                    ? classes.horarioSelected
+                                    : isSuggested
+                                    ? classes.horarioSuggested
+                                    : classes.horario
+                                }
+                              >
+                                <span style={{ fontSize: 17 }}>{hora}</span>
+                              </Box>
+                            </SwiperSlide>
+                          )
+                        })}
+                      </Swiper>
+                    </Box>
+                  )
+                }
+              })}
+              <Box style={{ float: "right" }} marginTop={2} marginBottom={4}>
+                <SecondaryButton onClick={handleCancel}>
+                  Cancelar
+                </SecondaryButton>
+                <PrimaryButton
+                  style={{ marginLeft: 16 }}
+                  disabled={selected !== null ? false : true}
+                  onClick={handleNext}
+                >
+                  Continuar
+                </PrimaryButton>
+              </Box>
+            </>
           ) : (
             <Box
               display="flex"
@@ -154,7 +241,10 @@ export default function OpcionesDisponibles({ close }) {
           )}
         </>
       ) : (
-        <LoadingFeedback />
+        <LoadingFeedback
+          description="Estamos buscando opciones que te puedan interesar"
+          title="Aguarde un instante por favor"
+        />
       )}
     </Box>
   )

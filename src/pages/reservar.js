@@ -9,9 +9,16 @@ import Layout from "../components/Layout.js"
 const ReservarPage = () => {
   const [context, setContext] = useState({
     step: 0,
-    cantidadDePersonas: null,
+    cantidadDePersonas: 0,
     dia: new Date(),
     hora: "",
+    prefijo: "",
+    telefono: "",
+    nombre: "",
+    apellido: "",
+    email: "",
+    repetir_email: "",
+    observaciones: "",
   })
 
   const [snackbar, setSnackbar] = useState({ open: false })
@@ -56,7 +63,7 @@ const ReservarPage = () => {
       </ContextReserva.Provider>
       <Snackbar
         open={snackbar.open}
-        autoHideDuration={7000}
+        autoHideDuration={5000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >

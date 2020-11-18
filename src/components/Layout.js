@@ -23,6 +23,10 @@ const theme = createMuiTheme({
       default: "#F5F6FA",
       paper: "white",
     },
+    error: {
+      main: "#FF6666",
+      light: "#F8D7DA"
+    }
   },
   typography: {
     allVariants: {

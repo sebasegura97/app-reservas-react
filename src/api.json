@@ -1,25 +1,52 @@
 {
-  "header": {
-    "restoCode": "cm",
-    "authorization": null
-  },
-  "body": {
-    "fecha": "10/08/2020",
-    "hora": "10: 30",
-    "cantidadPersonas": 4,
-    "datosDelCliente": {
-      "telefono": "3874748181",
-      "nombre": "Sebastian",
-      "apellido": "Segura",
-      "email": "sebasegura97@gmail.com"
+  "reserva": {
+    "automatico": "1",
+    "resto": "cm",
+    "discapacitados": "0",
+    "trona": "1",
+    "fechareserva": "18/11/2020",
+    "horareserva": "20:00",
+    "comensales": "2",
+    "mesa_id": "3",
+    "cliente": {
+      "nombre": "Damian",
+      "apellido": "Cipriani",
+      "email": "damiancipriani1@gmail.com",
+      "prefijo": "54",
+      "telefono": "3424303694"
     },
-    "informacionAdicional": [
-      {
-        "cliente1": {
-          "menu": "milanesas",
-          "esceliaco": false
-        }
+    "prescriptor": {
+      "nombre": "prueba prescriptor"
+    },
+    "comen": {
+      "1": {
+        "menu": "1",
+        "intolerancias": {
+          "Gluten": "1",
+          "Lactosa": "1",
+          "Verduras": "0",
+          "Mariscos": "0",
+          "Legumbres": "0",
+          "Cereales": "0",
+          "Huevos": "0",
+          "Frutos Secos": "0"
+        },
+        "intoleranciaotra": " "
+      },
+      "2": {
+        "menu": "2",
+        "intolerancias": {
+          "Gluten": "0",
+          "Lactosa": "0",
+          "Verduras": "1",
+          "Mariscos": "1",
+          "Legumbres": "0",
+          "Cereales": "0",
+          "Huevos": "0",
+          "Frutos Secos": "0"
+        },
+        "intoleranciaotra": " "
       }
-    ]
+    }
   }
 }

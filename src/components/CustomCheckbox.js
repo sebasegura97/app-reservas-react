@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 // Inspired by blueprintjs
-function StyledCheckbox(props) {
+function StyledCheckbox({ checkboxProps }) {
   const classes = useStyles()
 
   return (
@@ -51,7 +51,8 @@ function StyledCheckbox(props) {
       checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
       icon={<span className={classes.icon} />}
       inputProps={{ "aria-label": "decorative checkbox" }}
-      {...props}
+      // onChange={() =>  console.log("mira en styled si llego")}
+      {...checkboxProps}
     />
   )
 }
@@ -63,18 +64,9 @@ export default function CustomCheckbox({
 }) {
   return (
     <Box display="flex" flexDirection="row" alignItems="center">
-      <StyledCheckbox name="checked" props={checkboxProps} />
+      <StyledCheckbox checkboxProps={checkboxProps} />
       {labelComponent && labelComponent}
-      {label && (
-        <Typography
-          variant="body1"
-          color="textSecondary"
-          style={{ lineHeight: 1, paddingTop: 4 }}
-        >
-          {" "}
-          {label}
-        </Typography>
-      )}
+      {label && <span style={{ fontSize: 16 }}> {label} </span>}
     </Box>
   )
 }

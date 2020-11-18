@@ -15,20 +15,109 @@ import CustomCheckbox from "../../CustomCheckbox"
 import CustomInput from "../../CustomInput"
 import { ContextReserva } from "./ContextReserva"
 import Info from "./Info"
+import parsePhoneNumberFromString from "libphonenumber-js/"
 
 const PREFIXES = ["+54", "+34"]
 
 export default function Paso2() {
   const theme = useTheme()
-  const { prevStep, nextStep } = useContext(ContextReserva)
+  const { prevStep, nextStep, openSnackbar, setContext, context } = useContext(
+    ContextReserva
+  )
 
   const handleBack = () => {
     prevStep()
   }
   const handleNext = () => {
-    nextStep()
+    const validation = validateInputs()
+    if (!validation.ok) {
+      openSnackbar({
+        severity: "error",
+        message: validation.message,
+      })
+    } else {
+      nextStep()
+    }
   }
-  
+
+  const handleInputChange = e => {
+    setContext({ ...context, [e.target.name]: e.target.value })
+  }
+
+  const handleCheckboxChange = e => {
+    setContext({ ...context, [e.target.name]: e.target.checked })
+  }
+
+  const validateInputs = () => {
+    const {
+      prefijo,
+      telefono,
+      nombre,
+      apellido,
+      email,
+      repetir_email,
+      terminos,
+    } = context
+    let phone = `${prefijo ? prefijo : ""}${telefono ? telefono : ""}`
+    phone = parsePhoneNumberFromString(phone)
+
+    if (!phone) {
+      return {
+        ok: false,
+        message: "Ingrese un número teléfonico valido.",
+      }
+    }
+    if (phone) {
+      const validatePhone = phone.isPossible()
+      if (!validatePhone) {
+        return {
+          ok: false,
+          message: "Ingrese un número teléfonico valido.",
+        }
+      }
+    }
+    if (nombre === "" || !nombre) {
+      return {
+        ok: false,
+        message: "Ingrese su nombre.",
+      }
+    }
+    if (apellido === "" || !apellido) {
+      return {
+        ok: false,
+        message: "Ingrese su apellido.",
+      }
+    }
+    if (email === "" || !email) {
+      return {
+        ok: false,
+        message: "Ingrese su email.",
+      }
+    }
+    if (repetir_email === "" || !repetir_email) {
+      return {
+        ok: false,
+        message: "Ingrese su email nuevamente en el campo repetir email.",
+      }
+    }
+    if (repetir_email !== email) {
+      return {
+        ok: false,
+        message: "Los email's ingresados no coinciden.",
+      }
+    }
+    if (!terminos) {
+      return {
+        ok: false,
+        message: "Debe aceptar los terminos y condiciones para continuar.",
+      }
+    }
+
+    return {
+      ok: true,
+    }
+  }
+
   return (
     <Slide direction="left" in={true} mountOnEnter unmountOnExit>
       <Box
@@ -57,12 +146,10 @@ export default function Paso2() {
                     position: "relative",
                     height: "100%",
                     backgroundColor: theme.palette.background.default,
-                    // border: "1px solid #ced4da",
                     fontSize: 16,
                     display: "flex",
                     alignItems: "center",
                     paddingLeft: 16,
-                    // Use the system font instead of the default Roboto font.
                     "&:focus": {
                       borderRadius: 8,
                       borderColor: "#80bdff",
@@ -71,7 +158,8 @@ export default function Paso2() {
                   }}
                 />
               }
-              defaultValue="+54"
+              inputProps={{ onChange: handleInputChange }}
+              value={context.prefijo}
               fullWidth
               type="number"
               name="prefijo"
@@ -91,6 +179,8 @@ export default function Paso2() {
               type="number"
               name="telefono"
               placeholder="Telefono"
+              value={context.telefono}
+              onChange={handleInputChange}
               inputProps={{
                 style: {
                   borderTopLeftRadius: 0,
@@ -100,7 +190,8 @@ export default function Paso2() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          {/* A esto lo saque porque no tiene sentido */}
+          {/* <Grid item xs={12} sm={6}>
             <Select
               input={<CustomInput />}
               defaultValue="A la carta"
@@ -112,7 +203,7 @@ export default function Paso2() {
               <MenuItem value={"A la carta"}>A la carta</MenuItem>
               <MenuItem value="Otro">Otro</MenuItem>
             </Select>
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} sm={6}>
             <CustomInput
@@ -120,6 +211,8 @@ export default function Paso2() {
               type="text"
               name="nombre"
               placeholder="Nombre"
+              value={context.nombre}
+              onChange={handleInputChange}
             />
           </Grid>
 
@@ -129,6 +222,8 @@ export default function Paso2() {
               type="text"
               name="apellido"
               placeholder="Apellido"
+              value={context.apellido}
+              onChange={handleInputChange}
             />
           </Grid>
 
@@ -138,6 +233,8 @@ export default function Paso2() {
               type="text"
               name="email"
               placeholder="Email"
+              value={context.email}
+              onChange={handleInputChange}
             />
           </Grid>
 
@@ -146,6 +243,8 @@ export default function Paso2() {
               fullWidth
               type="text"
               name="repetir_email"
+              value={context.repetir_email}
+              onChange={handleInputChange}
               placeholder="Repetir email"
             />
           </Grid>
@@ -161,6 +260,8 @@ export default function Paso2() {
               }}
               type="text"
               name="observaciones"
+              value={context.observaciones}
+              onChange={handleInputChange}
               placeholder="Observaciones"
             />
           </Grid>
@@ -173,25 +274,35 @@ export default function Paso2() {
             <Info />{" "}
           </Grid>
           <Grid item xs={12} sm={8}>
-            <Typography
-              variant="body1"
-              style={{ fontWeight: 600 }}
-              color="primary"
-            >
-              * Si selecciona un menu sera para todos los integrantes de la
-              reserva.
-            </Typography>
             <Box>
-              <CustomCheckbox label="Tiene algun comensal intolerancia o alergia?" />
+              <CustomCheckbox
+                checkboxProps={{
+                  value: context.termino,
+                  onChange: handleCheckboxChange,
+                  name: "mesadiscapacitados",
+                }}
+                label="Mesa accesible para discapacitados."
+              />
             </Box>
             <Box>
-              <CustomCheckbox label="Mesa accesible para discapacitados." />
+              <CustomCheckbox
+                checkboxProps={{
+                  value: context.termino,
+                  onChange: handleCheckboxChange,
+                  name: "trona",
+                }}
+                label="Trona para niños"
+              />
             </Box>
             <Box>
-              <CustomCheckbox label="Trona para niños" />
-            </Box>
-            <Box>
-              <CustomCheckbox label="He leido y acepto los terminos y condiciones" />
+              <CustomCheckbox
+                checkboxProps={{
+                  value: context.termino,
+                  onChange: handleCheckboxChange,
+                  name: "terminos",
+                }}
+                label="He leido y acepto los terminos y condiciones"
+              />
             </Box>
           </Grid>
         </Grid>
