@@ -16,7 +16,7 @@ const theme = createMuiTheme({
       main: "#A10013",
     },
     text: {
-      primary: "#303481",
+      primary: "#333333",
       secondary: "#7390B7",
     },
     background: {
@@ -30,8 +30,8 @@ const theme = createMuiTheme({
   },
   typography: {
     allVariants: {
-      color: "#303481",
-      fontFamily: "Lato",
+      color: "#333333",
+      fontFamily: "Poppins",
     },
   },
 })

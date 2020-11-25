@@ -1,13 +1,20 @@
 {
   "reserva": {
+    "totalCount": 129,
     "automatico": "1",
     "resto": "cm",
     "discapacitados": "0",
     "trona": "1",
-    "fechareserva": "18/11/2020",
-    "horareserva": "20:00",
+    "desde": "18/11/2020",
+    "created_at": "20:00",
     "comensales": "2",
     "mesa_id": "3",
+    "observaciones": "",
+    "estado": "presente",
+    "mesa": {
+      "id": 10,
+      "nombre": "Mesa 10"
+    },
     "cliente": {
       "nombre": "Damian",
       "apellido": "Cipriani",
@@ -18,35 +25,88 @@
     "prescriptor": {
       "nombre": "prueba prescriptor"
     },
-    "comen": {
-      "1": {
-        "menu": "1",
-        "intolerancias": {
-          "Gluten": "1",
-          "Lactosa": "1",
-          "Verduras": "0",
-          "Mariscos": "0",
-          "Legumbres": "0",
-          "Cereales": "0",
-          "Huevos": "0",
-          "Frutos Secos": "0"
+    "infoAdicional": {
+      "comen": [
+        {
+          "menu": "Menu desgustacion 1",
+          "intolerancias": {
+            "Gluten": "1",
+            "Lactosa": "1",
+            "Verduras": "0",
+            "Mariscos": "0",
+            "Legumbres": "0",
+            "Cereales": "0",
+            "Huevos": "0",
+            "Frutos Secos": "0"
+          },
+          "intoleranciaotra": " "
         },
-        "intoleranciaotra": " "
-      },
-      "2": {
-        "menu": "2",
-        "intolerancias": {
-          "Gluten": "0",
-          "Lactosa": "0",
-          "Verduras": "1",
-          "Mariscos": "1",
-          "Legumbres": "0",
-          "Cereales": "0",
-          "Huevos": "0",
-          "Frutos Secos": "0"
-        },
-        "intoleranciaotra": " "
-      }
+        {
+          "menu": "2",
+          "intolerancias": {
+            "Gluten": "0",
+            "Lactosa": "0",
+            "Verduras": "1",
+            "Mariscos": "1",
+            "Legumbres": "0",
+            "Cereales": "0",
+            "Huevos": "0",
+            "Frutos Secos": "0"
+          },
+          "intoleranciaotra": " "
+        }
+      ]
     }
+  },
+  
+  "cliente": {
+    "id": 5,
+    "restaurante_id": 1,
+    "nombre": "Damian",
+    "apellido": "Cipriani",
+    "email": "damiancipriani1@gmail.com",
+    "prefijo": "39",
+    "telefono": "02762961",
+    "nif": "3211112",
+    "direccion_facturacion": null,
+    "empresa": null,
+    "nombre_fiscal": null,
+    "forma_pago": null,
+    "tipo_tarjeta": null,
+    "num_tarjeta": null,
+    "vencimiento_tarjeta": null,
+    "codigo_tarjeta": null,
+    "vip": 1,
+    "observaciones": "prueba",
+    "created": "2020-09-10T18:29:10-03:00",
+    "modified": "2020-10-14T18:09:20-03:00",
+    "deleted": null
+  },
+
+  "reservasCliente": {
+    "estadisticas": {
+      "totalReservas": 12,
+      "presente": 10,
+      "ausente": 1,
+      "cancelado": 1
+    },
+    "reservas": [
+      {
+        "desde":"18/11/2020 20:30",
+        "comensales": 4,
+        "mesa": {
+          "infodemesa": "info de la mesa"
+        },
+        "estado": "Ultimo estado o array ordenado"
+      },
+      {
+        "desde":"18/11/2020 20:30",
+        "comensales": 4,
+        "mesa": {
+          "infodemesa": "info de la mesa"
+        },
+        "estado": "Ultimo estado o array ordenado"
+      }
+    ]
   }
 }

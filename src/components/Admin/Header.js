@@ -19,23 +19,13 @@ export default function Header() {
   }
 
   return (
-    <Box
-      dispaly="block"
-      display="inline-flex"
-      paddingTop={2}
-      height={116}
-      paddingLeft={4}
-      alignItems="center"
-      width="max-content"
-    >
-      <img
-        src={logo}
-        width={64}
-        height={64}
-        onClick={toggleDrawer}
-        className={classes.logo}
-        alt="Boton para abrir la navegacion."
-      ></img>
-    </Box>
+    <img
+      src={logo}
+      width={64}
+      height={64}
+      onClick={toggleDrawer}
+      className={classes.logo}
+      alt="Boton para abrir la navegacion."
+    ></img>
   )
 }

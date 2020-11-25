@@ -1,9 +1,10 @@
 import { Box, makeStyles } from "@material-ui/core"
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos"
-import React, { useContext, useState } from "react"
-import { ContextAdmin } from "../Admin/ContextAdmin"
+import React, { useEffect, useState } from "react"
 import { getMonthName } from "../../utils/date.js"
+import { format } from "date-fns"
+import PropTypes from "prop-types"
 
 const DAY_NAMES = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
 
@@ -28,8 +29,6 @@ const useStyles = makeStyles(theme => ({
   },
   itemContainer: {
     backgroundColor: "white",
-    paddingRight: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
     borderRadius: 4,
     transition: ".3s",
     "&:hover": {
@@ -50,13 +49,15 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Container = ({ children, ...rest }) => {
+const ItemContainer = ({ children, variant, ...rest }) => {
   const classes = useStyles()
   return (
     <Box
-      height={104}
+      height={variant === "small" ? "auto" : 104}
       display="flex"
       alignItems="center"
+      paddingRight={variant === "small" ? 1 : 2}
+      paddingLeft={variant === "small" ? 1 : 2}
       className={classes.itemContainer}
       {...rest}
     >
@@ -65,17 +66,20 @@ const Container = ({ children, ...rest }) => {
   )
 }
 
-const Day = ({ day }) => {
+const Day = ({ variant, ...rest }) => {
+  if (variant === "normal") {
+    return <DayNormal {...rest} />
+  }
+  if (variant === "small") {
+    return <DaySmall {...rest} />
+  }
+}
+
+const DayNormal = ({ day, selected, onDayClick }) => {
   const classes = useStyles()
-  const { context, setContext } = useContext(ContextAdmin)
-
-  const dayString = `${day.getFullYear()}/${day.getMonth()}/${day.getDate()}`
-  const selectedDayString = `${context.dayOfWeek.getFullYear()}/${context.dayOfWeek.getMonth()}/${context.dayOfWeek.getDate()}`
-
-  const selected = selectedDayString === dayString
 
   const handleDayClick = () => {
-    setContext({ ...context, dayOfWeek: day })
+    onDayClick(day)
   }
 
   return (
@@ -85,6 +89,8 @@ const Day = ({ day }) => {
       alignItems="center"
       justifyContent="center"
       flexDirection="column"
+      paddingRight={2}
+      paddingLeft={2}
       className={selected ? classes.selectedDay : classes.itemContainer}
       onClick={handleDayClick}
     >
@@ -100,10 +106,39 @@ const Day = ({ day }) => {
   )
 }
 
-export default function DayOfWeekPicker() {
+const DaySmall = ({ day, selected, onDayClick }) => {
+  const classes = useStyles()
+
+  const handleDayClick = () => {
+    onDayClick(day)
+  }
+
+  return (
+    <Box
+      paddingTop={1}
+      paddingBottom={1}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      flexDirection="column"
+      width={60}
+      className={selected ? classes.selectedDay : classes.itemContainer}
+      onClick={handleDayClick}
+    >
+      <span style={{ fontSize: 11, whiteSpace: "pre" }}>
+        {day.getDate()}{" "}
+        {getMonthName({ monthNumber: day.getMonth(), shortname: true })}{" "}
+      </span>
+      <span style={{ fontWeight: 900 }}> {DAY_NAMES[day.getDay()]} </span>
+    </Box>
+  )
+}
+
+export default function DayOfWeekPicker({ onChangeDay, value, variant }) {
   const classes = useStyles()
   const today = new Date()
   const [week, setWeek] = useState(() => getWeek(today))
+  const [selectedDay, setSelectedDay] = useState(today)
 
   const handlePrevWeekButton = () => {
     // Esto es un lunes
@@ -125,17 +160,43 @@ export default function DayOfWeekPicker() {
     setWeek(nextWeek)
   }
 
+  const handleDayClick = value => {
+    // setSelectedDay(value)
+    if (onChangeDay) {
+      onChangeDay(value)
+    }
+  }
+
+  useEffect(() => {
+    const newWeek = getWeek(value)
+    setWeek(newWeek)
+  }, [value])
+
   return (
     <Box display="flex" className={classes.container}>
-      <Container onClick={handlePrevWeekButton}>
+      <ItemContainer variant={variant} onClick={handlePrevWeekButton}>
         <ArrowBackIosIcon />
-      </Container>
+      </ItemContainer>
       {week.map((day, index) => (
-        <Day key={index} day={day} />
+        <Day
+          variant={variant}
+          key={index}
+          day={day}
+          selected={format(value, "dd/MM/yyyy") === format(day, "dd/MM/yyyy")}
+          onDayClick={handleDayClick}
+        />
       ))}
-      <Container onClick={handleNextWeekButton}>
+      <ItemContainer variant={variant} onClick={handleNextWeekButton}>
         <ArrowForwardIosIcon />
-      </Container>
+      </ItemContainer>
     </Box>
   )
+}
+
+DayOfWeekPicker.propTypes = {
+  variant: PropTypes.oneOf(["small", "default"]),
+}
+
+DayOfWeekPicker.defaultProps = {
+  variant: "default",
 }

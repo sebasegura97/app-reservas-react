@@ -1,0 +1,21 @@
+#dx-grid thead {
+  background-color: #f5f6fa;
+  font-weight: bolder;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+#dx-grid thead tr th {
+  font-weight: bolder;
+  font-size: medium;
+}
+
+#dx-grid div div:nth-child(1) {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* #dx-grid .TableContainer-root-2591 {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+} */

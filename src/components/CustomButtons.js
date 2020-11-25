@@ -20,6 +20,20 @@ const useStyles = makeStyles(theme => ({
       boxShadow: "none",
     },
   },
+  primarySmall: {
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    // paddingTop: theme.spacing(1),
+    // paddingBottom: theme.spacing(1),
+    height: 48,
+    borderRadius: 8,
+    textTransform: "none",
+    boxShadow: "none",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.dark,
+      boxShadow: "none",
+    },
+  },
   secondary: {
     [theme.breakpoints.down("sm")]: {
       paddingRight: theme.spacing(3),
@@ -58,15 +72,16 @@ const useStyles = makeStyles(theme => ({
       transition: ".3s",
     },
   },
+  
 }))
 
-export function PrimaryButton({ children, ...rest }) {
+export function PrimaryButton({ children, variant, ...rest }) {
   const classes = useStyles()
   return (
     <Button
       variant="contained"
       color="primary"
-      className={classes.primary}
+      className={variant === "small" ? classes.primarySmall : classes.primary}
       {...rest}
     >
       {children}

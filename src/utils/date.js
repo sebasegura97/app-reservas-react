@@ -41,16 +41,16 @@ export function getMonthName({
 
 export function getDayName({ shortname = false, fullname = true, dayNumber }) {
   const days_fullname = [
+    "Domingo",
     "Lunes",
     "Martes",
     "Miércoles",
     "Jueves",
     "Viernes",
     "Sábado",
-    "Domingo",
   ]
 
-  const days_shortname = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
+  const days_shortname = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
 
   if (shortname) {
     return days_shortname[dayNumber]

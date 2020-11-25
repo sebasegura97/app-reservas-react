@@ -168,7 +168,7 @@ export default function OpcionesDisponibles({ close }) {
                       </Typography>
                       <Swiper
                         spaceBetween={8}
-                        slidesPerView={xs ? "auto" : 7}
+                        slidesPerView={xs ? 5 : 7}
                         onSwiper={swiper => console.log(swiper)}
                         onSlideChange={() => console.log("slide change")}
                       >

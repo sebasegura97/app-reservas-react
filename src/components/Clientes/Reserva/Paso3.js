@@ -40,74 +40,94 @@ import { get, post } from "../../../services/httpClient"
 import { useParams } from "@reach/router"
 import { format } from "date-fns"
 
-export const ICONS = [
+export const intoleranciasIconSet = ({ backgroundColor, iconColor }) => [
   {
     name: "pescado",
-    icon: <SvgPescado backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgPescado backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
   {
     name: "crustaceos",
-    icon: <SvgCrustaceos backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgCrustaceos backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
   {
     name: "moluscos",
-    icon: <SvgMoluscos backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgMoluscos backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
   {
     name: "gluten",
-    icon: <SvgGluten backgroundColor="transparent" iconColor="blue" />,
+    icon: <SvgGluten backgroundColor={backgroundColor} iconColor={iconColor} />,
   },
   {
     name: "huevos",
-    icon: <SvgHuevos backgroundColor="transparent" iconColor="blue" />,
+    icon: <SvgHuevos backgroundColor={backgroundColor} iconColor={iconColor} />,
   },
   {
     name: "lacteos",
-    icon: <SvgLacteos backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgLacteos backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
   {
     name: "soja",
-    icon: <SvgSoja backgroundColor="transparent" iconColor="blue" />,
+    icon: <SvgSoja backgroundColor={backgroundColor} iconColor={iconColor} />,
   },
   {
     name: "cacahuates",
-    icon: <SvgCacahuates backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgCacahuates backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
   {
     name: "frutossecos",
-    icon: <SvgFrutossecos backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgFrutossecos backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
   {
     name: "apio",
-    icon: <SvgApio backgroundColor="transparent" iconColor="blue" />,
+    icon: <SvgApio backgroundColor={backgroundColor} iconColor={iconColor} />,
   },
   {
     name: "mostaza",
-    icon: <SvgMostaza backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgMostaza backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
   {
     name: "sesamo",
-    icon: <SvgSesamo backgroundColor="transparent" iconColor="blue" />,
+    icon: <SvgSesamo backgroundColor={backgroundColor} iconColor={iconColor} />,
   },
   {
     name: "altranueces",
-    icon: <SvgAltranueces backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgAltranueces backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
   {
     name: "dioxidodeazufre",
-    icon: <SvgDioxido backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgDioxido backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
   {
     name: "vegano",
-    icon: <SvgVegano backgroundColor="transparent" iconColor="blue" />,
+    icon: <SvgVegano backgroundColor={backgroundColor} iconColor={iconColor} />,
   },
   {
     name: "glutenfree",
-    icon: <SvgGluten backgroundColor="transparent" iconColor="blue" />,
+    icon: <SvgGluten backgroundColor={backgroundColor} iconColor={iconColor} />,
   },
   {
     name: "vegetariano",
-    icon: <SvgVegetariano backgroundColor="transparent" iconColor="blue" />,
+    icon: (
+      <SvgVegetariano backgroundColor={backgroundColor} iconColor={iconColor} />
+    ),
   },
 ]
 
@@ -167,8 +187,11 @@ const Comensal = ({
   const openPopper = Boolean(anchorEl)
 
   const findIcon = name => {
+    const ICONS = intoleranciasIconSet({
+      backgroundColor: "transparent",
+      iconColor: theme.palette.primary.main,
+    })
     const element = ICONS.filter(icon => icon.name === name)
-    console.log("element", element)
     if (element && element[0]) {
       let icon = element[0].icon
       return icon
@@ -178,7 +201,7 @@ const Comensal = ({
   return (
     <>
       <Grid container alignItems="center" justify="space-between">
-        <Grid item xs={12} sm={2}>
+        <Grid item xs={12} sm={3}>
           <Box
             display="flex"
             alignItems="center"
@@ -193,7 +216,7 @@ const Comensal = ({
             </span>
           </Box>
         </Grid>
-        <Grid item xs={6} sm={6}>
+        <Grid item xs={6} sm={5}>
           <Select
             input={<CustomInput />}
             onChange={handleChangeMenu}

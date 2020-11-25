@@ -14,14 +14,20 @@ const readUrl = (url = "") =>
     : `${urlBase}/${url}`
 
 export async function get(url = "", headers = {}) {
-  const result = await axios.get(readUrl(url), {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      ...headers,
-    },
-  })
-  return result
+  try {
+    const result = await axios.get(readUrl(url), {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        ...headers,
+      },
+    })
+    return result
+  } catch (error) {
+    console.log("Error en la peticion http get", error)
+    return error
+  }
 }
 
 export async function post(url = "", body = {}, headers = {}) {
@@ -29,6 +35,7 @@ export async function post(url = "", body = {}, headers = {}) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
       ...headers,
     },
   })
@@ -41,6 +48,7 @@ export async function put(url = "", body = {}, headers = {}) {
       Accept: "application/json",
       "Content-Type": "application/json",
       ...headers,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   })
   return result
@@ -51,6 +59,7 @@ export async function del(url = "", headers = {}) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
       ...headers,
     },
   })

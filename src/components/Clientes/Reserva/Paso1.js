@@ -109,7 +109,7 @@ export default function Paso1() {
 
   const showErrorFeedback = () => {
     openSnackbar({
-      severity: "error",
+      severity: "warning",
       message: `No se ha encontrado disponibilidad para ${
         context.cantidadDePersonas
       } personas el dia

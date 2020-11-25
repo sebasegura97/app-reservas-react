@@ -53,7 +53,6 @@ const renderHeader = ({
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
-      // marginLeft="18px"
       marginBottom={1}
     >
       <Typography className={classes.headerDate} variant="h6">

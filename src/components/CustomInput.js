@@ -1,6 +1,10 @@
 import { InputBase, withStyles } from "@material-ui/core"
 
 const CustomInput = withStyles(theme => ({
+  error: {
+    border: `2px solid ${theme.palette.error.main}`,
+    borderRadius: 8,
+  },
   input: {
     borderRadius: 8,
     position: "relative",
@@ -11,10 +15,10 @@ const CustomInput = withStyles(theme => ({
     display: "flex",
     alignItems: "center",
     paddingLeft: 16,
-    '&::placeholder': {
+    "&::placeholder": {
       fontWeight: 400,
-      fontSize: 18,
-      color: theme.palette.text.primary
+      fontSize: 16,
+      color: theme.palette.text.primary,
     },
     // Use the system font instead of the default Roboto font.
     "&:focus": {
